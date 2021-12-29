@@ -142,7 +142,7 @@ def transformToBricks( brickId, state):
     for x in range(4):
         for y in range(4):
             bricks[x][y] = 0
-     
+    
     # 取得磚塊索引陣列.
     p_brick = getBrickIndex(brickId, state)
     
@@ -151,15 +151,6 @@ def transformToBricks( brickId, state):
         bx = int(p_brick[i] % 4)
         by = int(p_brick[i] / 4)
         bricks[bx][by] = brickId
-
-    """
-    # 印出訊息.
-    for y in range(4): 
-        s = ""
-        for x in range(4): 
-            s = s + str(bricks[x][y]) + ","       
-        print(s)
-    """
 
 #-------------------------------------------------------------------------
 # 判斷是否可以複製到容器內.
@@ -175,7 +166,7 @@ def ifCopyToBricksArray():
     posY = 0
     for x in range(4):
         for y in range(4):
-           if (bricks[x][y] != 0):
+            if (bricks[x][y] != 0):
                 posX = container_x + x
                 posY = container_y + y
                 if (posX >= 0 and posY >= 0):
@@ -202,7 +193,7 @@ def copyToBricksArray():
                 posY = container_y + y
                 if (posX >= 0 and posY >= 0):
                     bricks_array[posX][posY] = bricks[x][y]
-     
+    
 #-------------------------------------------------------------------------
 # 初始遊戲.
 #-------------------------------------------------------------------------
@@ -375,18 +366,18 @@ pygame.init()
 pygame.display.set_caption(u"俄羅斯方塊遊戲")
 # 建立畫佈大小.
 # 全螢幕模式.
-canvas = pygame.display.set_mode((canvas_width, canvas_height), pygame.DOUBLEBUF and pygame.FULLSCREEN )
+# canvas = pygame.display.set_mode((canvas_width, canvas_height), pygame.DOUBLEBUF and pygame.FULLSCREEN )
 # 視窗模式.
-#canvas = pygame.display.set_mode((canvas_width, canvas_height))
+canvas = pygame.display.set_mode((canvas_width, canvas_height))
 
 # 時脈.
 clock = pygame.time.Clock()
 
 # 查看系統支持那些字體
-#print(pygame.font.get_fonts())
+print(pygame.font.get_fonts())
 
 # 設定字型-黑體.
-font = pygame.font.SysFont("simsunnsimsun", 24)
+font = pygame.font.SysFont("simhei", 24)
 
 
 # 將繪圖方塊放入陣列.
@@ -477,6 +468,14 @@ while running:
             elif event.key == pygame.K_DOWN and game_mode == 0:
                 # 磚塊快速下降.
                 brick_down_speed = BRICK_DROP_RAPIDLY
+            #-----------------------------------------------------------------
+            # 瞬間降落-空白鍵
+            elif event.key == pygame.K_SPACE and game_mode == 0:
+                # 碰到磚塊.
+                while(not ifCopyToBricksArray()):
+                    brick_state = brick_state - 1
+                    if (brick_state < 0):
+                        brick_state = 1
             #-----------------------------------------------------------------
             # 移動方塊-左.
             elif event.key == pygame.K_LEFT and game_mode == 0:
