@@ -455,7 +455,7 @@ background_bricks_next = Box(pygame, canvas, "background_bricks_next", [ 590, 50
 
 #音效功能初始化
 pg.mixer.init()
-s = pg.mixer.Sound()  #括弧為音檔名稱
+s = pg.mixer.Sound(taiwan-official-music-video.wav)  #括弧為音檔名稱
 s.set_volume(0.7)  #設定音量大小，參值0~1
 s.play()           #播放音效
 
