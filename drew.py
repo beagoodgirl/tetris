@@ -26,4 +26,4 @@ class Box(object):
     #-------------------------------------------------------------------------
     def update(self):
         if(self.visivle):
-            self.pygame.draw.rect( self.canvas, self.color, self.rect)
+            self.pygame.draw.rect(self.canvas, self.color, self.rect)
