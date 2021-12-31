@@ -4,7 +4,6 @@ import time
 import pygame 
 from pygame.locals import *
 from drew import *
-from playcolor import *
 
 # 常數-磚塊快速下降速度.
 BRICK_DROP_RAPIDLY   = 0.02
