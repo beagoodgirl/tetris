@@ -341,7 +341,7 @@ def brickNew():
     global game_over, container_x, container_y, brick_id, brick_next_id, brick_state
     global lines_number, game_mode
 
-    # 判斷遊戲結束.
+    # 判斷遊戲結束了沒.
     game_over = False
     if (container_y < 0):
         game_over = True
@@ -402,7 +402,9 @@ def clearBrick():
                         bricks_array[x][y] = temp
                         y = y - 1
             bricks_array[x][0] = 0
-#整理大於後的矩陣     
+#-------------------------------------------------------------------------            
+# 整理大於後的矩陣     
+#-------------------------------------------------------------------------
 def rank_array():
         global point_rank
         for y in range (5):
@@ -523,13 +525,8 @@ while running:
             #-----------------------------------------------------------------#############
             # 瞬間降落-空白鍵
             elif event.key == pygame.K_SPACE and game_mode == 0:
-                while(True):
-                    print("121")
-                    brick_down_speed = BRICK_DROP_MOMENT
-                    if(ifCopyToBricksArray()):
-                        container_y = container_y - 1
-                        print("555")
-                        break
+                brick_down_speed = BRICK_DROP_MOMENT
+                
             #-----------------------------------------------------------------
             # 移動方塊-左.
             elif event.key == pygame.K_LEFT and game_mode == 0:
@@ -563,15 +560,20 @@ while running:
                 if (not ifCopyToBricksArray()):
                     container_x = container_x - 1   
             #--------------------------------------------------------------------- #############
-            #刪除方塊:
-            elif event.key == pygame.K_LSHIFT and game_mode == 0:
-                # clearBrick()
-                # brickNew()
-                if (ifCopyToBricksArray()):
-                    #產生新塊.
-                    brickNew()            
-                # 轉換定義方塊到方塊陣列(bricks).
-                transformToBricks(brick_id, brick_state)
+            #刪除方塊(不儲存的):
+            elif event.key == pygame.K_a and game_mode == 0:
+                brick_state = 0 #清空還在跑的方塊
+                
+                #設定初始位置
+                container_x = 3
+                container_y =-4
+                
+                # 現在出現方塊.
+                brick_id = brick_next_id
+                
+                # 下個出現方塊.
+                # 方塊編號(1~7).
+                brick_next_id = random.randint(1, 7)
         #-----------------------------------------------------------------
         # 判斷放開按鈕
         if event.type == pygame.KEYUP:
