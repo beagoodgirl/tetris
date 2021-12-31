@@ -4,6 +4,7 @@ import time
 import pygame 
 from pygame.locals import *
 from drew import *
+from action import *
 
 # 常數-磚塊快速下降速度.
 BRICK_DROP_RAPIDLY   = 0.01
@@ -12,7 +13,7 @@ BRICK_DOWN_SPEED_MAX = 0.5
 
 # 視窗大小.
 canvas_width = 800
-canvas_height = 600
+canvas_height = 800
 
 # 顏色.
 color_block         = (0,0,0)
@@ -21,23 +22,6 @@ color_red           = (255, 0, 0)
 color_gray          = (107,130,114)
 color_gray_block    = (20,31,23)
 color_gray_green    = (0, 255, 0)
-color_light_gray    = (200, 200, 200)
-
-# ColorVer:
-# 橘色   - N1.
-box_color_orange    = (204,102,51)
-# 紫色   - N2.
-box_color_purple    = (153,102,153)
-# 藍色   - L1.
-box_color_blue      = (51,102,204)
-# 紅色   - L2.
-box_color_light_red = (204,51,51)
-# 淡藍色 - T.
-box_color_light_blue= (51,204,255)
-# 黃色   - O.
-box_color_yellow    = (204,204,51)
-# 綠色   - I.
-box_color_green     = (51,153,102)
 
 # 定義磚塊.
 brick_dict = {
@@ -152,6 +136,15 @@ def transformToBricks( brickId, state):
         by = int(p_brick[i] / 4)
         bricks[bx][by] = brickId
 
+    """
+    # 印出訊息.
+    for y in range(4): 
+        s = ""
+        for x in range(4): 
+            s = s + str(bricks[x][y]) + ","       
+        print(s)
+    """
+
 #-------------------------------------------------------------------------
 # 判斷是否可以複製到容器內.
 # 傳出:
@@ -259,9 +252,6 @@ def updateNextBricks(brickId):
         by = int(pBrick[i] / 4)
         bricks_next[bx][by] = brickId
 
-    # ColorVer:設定背景顏色.
-    background_bricks_next.color = color_block
-
     # 更新背景區塊.
     background_bricks_next.update()
 
@@ -273,25 +263,6 @@ def updateNextBricks(brickId):
             if(bricks_next[x][y] != 0):
                 bricks_next_object[x][y].rect[0] = pos_x
                 bricks_next_object[x][y].rect[1] = pos_y
-
-                # ColorVer:依照方塊編號設定顏色.
-                if (bricks_next[x][y]==1):
-                    bricks_next_object[x][y].color = box_color_orange
-                elif (bricks_next[x][y]==2):
-                    bricks_next_object[x][y].color = box_color_purple
-                elif (bricks_next[x][y]==3):
-                    bricks_next_object[x][y].color = box_color_blue
-                elif (bricks_next[x][y]==4):
-                    bricks_next_object[x][y].color = box_color_light_red
-                elif (bricks_next[x][y]==5):
-                    bricks_next_object[x][y].color = box_color_light_blue
-                elif (bricks_next[x][y]==6):
-                    bricks_next_object[x][y].color = box_color_yellow
-                elif (bricks_next[x][y]==7):
-                    bricks_next_object[x][y].color = box_color_green
-                elif (bricks_next[x][y]==9):
-                    bricks_next_object[x][y].color = color_white
-
                 bricks_next_object[x][y].update()
             pos_x = pos_x + 28        
         pos_y = pos_y + 28
@@ -366,7 +337,7 @@ pygame.init()
 pygame.display.set_caption(u"俄羅斯方塊遊戲")
 # 建立畫佈大小.
 # 全螢幕模式.
-# canvas = pygame.display.set_mode((canvas_width, canvas_height), pygame.DOUBLEBUF and pygame.FULLSCREEN )
+#canvas = pygame.display.set_mode((canvas_width, canvas_height), pygame.DOUBLEBUF and pygame.FULLSCREEN )
 # 視窗模式.
 canvas = pygame.display.set_mode((canvas_width, canvas_height))
 
@@ -374,10 +345,10 @@ canvas = pygame.display.set_mode((canvas_width, canvas_height))
 clock = pygame.time.Clock()
 
 # 查看系統支持那些字體
-print(pygame.font.get_fonts())
+# print(pygame.font.get_fonts())
 
 # 設定字型-黑體.
-font = pygame.font.SysFont("simhei", 24)
+font = pygame.font.SysFont("arialblack", 24)
 
 
 # 將繪圖方塊放入陣列.
@@ -469,14 +440,6 @@ while running:
                 # 磚塊快速下降.
                 brick_down_speed = BRICK_DROP_RAPIDLY
             #-----------------------------------------------------------------
-            # 瞬間降落-空白鍵
-            elif event.key == pygame.K_SPACE and game_mode == 0:
-                # 碰到磚塊.
-                while(not ifCopyToBricksArray()):
-                    brick_state = brick_state - 1
-                    if (brick_state < 0):
-                        brick_state = 1
-            #-----------------------------------------------------------------
             # 移動方塊-左.
             elif event.key == pygame.K_LEFT and game_mode == 0:
                 container_x = container_x - 1
@@ -507,7 +470,12 @@ while running:
                         container_x = container_x - 1
                 # 碰到磚塊.
                 if (not ifCopyToBricksArray()):
-                    container_x = container_x - 1                    
+                    container_x = container_x - 1      
+            #-----------------------------------------------------------------
+            #移動方塊-空白鍵
+            elif event.key == pygame.Key_space and game_mode == 0:
+                while (not ifCopyToBricksArray()):
+                    container_x = container_x + 1             
         #-----------------------------------------------------------------
         # 判斷放開按鈕
         if event.type == pygame.KEYUP:
@@ -518,7 +486,7 @@ while running:
         
     #---------------------------------------------------------------------    
     # 清除畫面.
-    canvas.fill(color_light_gray)
+    canvas.fill(color_block)
 
     # 遊戲中.
     if (game_mode == 0):
@@ -548,42 +516,18 @@ while running:
     updateNextBricks(brick_next_id)
     # 更新繪圖.
     pos_y = 20
-    
-    # ColorVer:設定背景顏色.
-    background.color = color_block
     # 更新背景區塊.
     background.update()
-
     for y in range(20):
         pos_x = 280
         for x in range(10):
             if(bricks_array[x][y] != 0):
                 bricks_list[x][y].rect[0] = pos_x
                 bricks_list[x][y].rect[1] = pos_y
-
-                # ColorVer:依照方塊編號設定顏色.
-                if (bricks_array[x][y]==1):
-                    bricks_list[x][y].color = box_color_orange
-                elif (bricks_array[x][y]==2):
-                    bricks_list[x][y].color = box_color_purple
-                elif (bricks_array[x][y]==3):
-                    bricks_list[x][y].color = box_color_blue
-                elif (bricks_array[x][y]==4):
-                    bricks_list[x][y].color = box_color_light_red
-                elif (bricks_array[x][y]==5):
-                    bricks_list[x][y].color = box_color_light_blue
-                elif (bricks_array[x][y]==6):
-                    bricks_list[x][y].color = box_color_yellow
-                elif (bricks_array[x][y]==7):
-                    bricks_list[x][y].color = box_color_green
                 bricks_list[x][y].update()
-            else:
-                bricks_list[x][y].color = color_gray_block
-
-            pos_x = pos_x + 28
+            pos_x = pos_x + 28        
         pos_y = pos_y + 28    
-    
-    # 更新掉落中方塊
+    # 更新方塊
     for y in range(4):
         for x in range(4):            
             if (bricks[x][y] != 0):
@@ -592,27 +536,7 @@ while running:
                 if (posX >= 0 and posY >= 0):
                     bricks_list[posX][posY].rect[0] = (posX * 28) + 280
                     bricks_list[posX][posY].rect[1] = (posY * 28) + 20
-
-                    # ColorVer:依照方塊編號設定顏色.
-                    if (bricks[x][y]==1):
-                        bricks_list[posX][posY].color = box_color_orange
-                    elif (bricks[x][y]==2):
-                        bricks_list[posX][posY].color = box_color_purple
-                    elif (bricks[x][y]==3):
-                        bricks_list[posX][posY].color = box_color_blue
-                    elif (bricks[x][y]==4):
-                        bricks_list[posX][posY].color = box_color_light_red
-                    elif (bricks[x][y]==5):
-                        bricks_list[posX][posY].color = box_color_light_blue
-                    elif (bricks[x][y]==6):
-                        bricks_list[posX][posY].color = box_color_yellow
-                    elif (bricks[x][y]==7):
-                        bricks_list[posX][posY].color = box_color_green
-                    elif (bricks[x][y]==9):
-                        bricks_list[posX][posY].color = color_white
-
                     bricks_list[posX][posY].update()
-    
     #---------------------------------------------------------------------    
     # 除錯訊息.
     if(debug_message):
@@ -644,14 +568,14 @@ while running:
             pos_y = 20 + (posY * 28)
             showFont( str_x, pos_x, pos_y, color_white)
 
-    # ColorVer:顯示訊息.
-    showFont( u"下次出現方塊", 588, 16, color_block)
+    # 顯示訊息.
+    showFont( u"下次出現方塊", 588, 16, color_gray)
 
-    showFont( u"最大連線數", 588, 190, color_block)
-    showFont( str(int(lines_number_max)), 588, 220, color_block)
+    showFont( u"最大連線數", 588, 190, color_gray)
+    showFont( str(int(lines_number_max)), 588, 220, color_gray)
 
-    showFont( u"本局連線數", 588, 260, color_block)
-    showFont( str(int(lines_number)), 588, 290, color_block)
+    showFont( u"本局連線數", 588, 260, color_gray)
+    showFont( str(int(lines_number)), 588, 290, color_gray)
 
     # 顯示FPS.
     # 除錯訊息.
