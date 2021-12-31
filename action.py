@@ -712,8 +712,11 @@ while running:
     showFont( u"下次出現方塊", 588, 16, color_block)
     showFont( u"最大連線數", 588, 190, color_block)
     showFont( str(int(lines_number_max)), 588, 220, color_block)
-    showFont( u"本局連線數", 588, 260, color_block)
-    showFont( str(int(lines_number)), 588, 290, color_block)
+    # showFont( u"本局連線數", 588, 260, color_block)
+    # showFont( str(int(lines_number)), 588, 290, color_block)
+    showFont( u"分數", 588, 260, color_block)
+    showFont( str(int(lines_number*5)), 588, 290, color_block)
+    
 
     #rank
     showFont( u"排名", 600, 380, color_block)
