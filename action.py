@@ -3,6 +3,7 @@ import os, sys, random
 import time
 import pygame 
 from pygame.locals import *
+import pygame as pg
 from drew import *
 
 # 常數-磚塊快速下降速度.
@@ -116,10 +117,10 @@ point_rank= [0,0,0,0,0,0]
 # def _draw_gridlines(screen):
 #     # 畫網格線 豎線
 #         for x in range(canvas_width):
-#             pygame.draw.line(screen, (10,10,10), (x * 30, 0), (x * 30, canvas_height), 1)
+#             pygame.draw.line(screen, (100,100,100), (x * 30, 0), (x * 30, canvas_height), 1)
 #         # 畫網格線 橫線
 #         for y in range(canvas_height):
-#             pygame.draw.line(screen, (10,10,10), (0, y * 30), (canvas_width * 30, y * 30), 1)
+#             pygame.draw.line(screen, (100,100,100), (0, y * 30), (canvas_width * 30, y * 30), 1)
 
 #-------------------------------------------------------------------------
 # 函數:秀字.
@@ -444,10 +445,19 @@ for y in range(4):
         bricks_next_object[x][y] = Box(pygame, canvas, "brick_next_x_" + str(x) + "_y_" + str(y), [ 0, 0, 26, 26], color_gray_block)
 
 # 背景區塊.
-background = Box(pygame, canvas, "background", [ 278, 18, 282, 562], color_gray)
+background = Box(pygame, canvas, "background", [278, 18, 282, 562], color_gray)
+
+#網格
+# _draw_gridlines(screen)
 
 # 背景區塊.
 background_bricks_next = Box(pygame, canvas, "background_bricks_next", [ 590, 50, 114, 114], color_gray)
+
+#音效功能初始化
+pg.mixer.init()
+s = pg.mixer.Sound()  #括弧為音檔名稱
+s.set_volume(0.7)  #設定音量大小，參值0~1
+s.play()           #播放音效
 
 # 方塊編號(1~7).
 brick_next_id = random.randint( 1, 7)
