@@ -534,8 +534,26 @@ while running:
             #-----------------------------------------------------------------#############
             # 瞬間降落-空白鍵
             elif event.key == pygame.K_SPACE and game_mode == 0:
+                #磚塊瞬間下降
                 brick_down_speed = BRICK_DROP_MOMENT
-                
+                # posX = 0
+                # posY = 0
+                for x in range(4):
+                    for y in range(4):
+                        print(pos_x)
+                        print(pos_y)
+                        if (bricks[x][y] != 0):
+                            posX = container_x + x
+                            posY = container_y + y
+                            print(pos_x)
+                            print(pos_y)
+                            if (posX >= 0 and posY >= 0):
+                                if (bricks_array[posX][posY] != 0):
+                                    print("111")
+                                else:
+                                    print("333")
+                                # brick_down_speed = BRICK_DOWN_SPEED_MAX
+                                
             #-----------------------------------------------------------------
             # 移動方塊-左.
             elif event.key == pygame.K_LEFT and game_mode == 0:
@@ -590,6 +608,12 @@ while running:
             if event.key == pygame.K_DOWN:
                 # 恢復正常下降速度.
                 brick_down_speed = BRICK_DOWN_SPEED_MAX
+            # 瞬間下降-空白鍵.
+            if event.key == pygame.K_SPACE:
+                # 碰到磚塊.
+                if (not ifCopyToBricksArray()):
+                    # 恢復正常下降速度.
+                    brick_down_speed = BRICK_DOWN_SPEED_MAX
     #---------------------------------------------------------------------    
     # 清除畫面.
     canvas.fill(color_light_gray)
