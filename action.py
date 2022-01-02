@@ -197,6 +197,28 @@ def ifCopyToBricksArray():
     return True
 
 #-------------------------------------------------------------------------
+#空白鍵
+#-------------------------------------------------------------------------
+def ifCopyToBricksArray2():
+    global bricks, bricks_array
+    global container_x, container_y
+
+    posX = 0
+    posY = 0
+    for x in range(4):
+        for y in range(4):
+            if (bricks[x][y] != 0):
+                posX = container_x + x
+                posY = container_y + y
+                if (posX >= 0 and posY >= 0):
+                    try:
+                        if (bricks_array[posX][posY + 2] != 0):
+                            return False
+                    except:
+                        return False
+    return True
+
+#-------------------------------------------------------------------------
 # 複製方塊到容器內.
 #-------------------------------------------------------------------------
 def copyToBricksArray():
@@ -536,23 +558,12 @@ while running:
             elif event.key == pygame.K_SPACE and game_mode == 0:
                 #磚塊瞬間下降
                 brick_down_speed = BRICK_DROP_MOMENT
-                # posX = 0
-                # posY = 0
-                for x in range(4):
-                    for y in range(4):
-                        print(pos_x)
-                        print(pos_y)
-                        if (bricks[x][y] != 0):
-                            posX = container_x + x
-                            posY = container_y + y
-                            print(pos_x)
-                            print(pos_y)
-                            if (posX >= 0 and posY >= 0):
-                                if (bricks_array[posX][posY] != 0):
-                                    print("111")
-                                else:
-                                    print("333")
-                                # brick_down_speed = BRICK_DOWN_SPEED_MAX
+                while (ifCopyToBricksArray2()):
+                    if (container_y < 17):
+                        container_y = container_y + 1
+                    else:
+                        break
+                brick_down_speed = BRICK_DOWN_SPEED_MAX
                                 
             #-----------------------------------------------------------------
             # 移動方塊-左.
@@ -608,12 +619,7 @@ while running:
             if event.key == pygame.K_DOWN:
                 # 恢復正常下降速度.
                 brick_down_speed = BRICK_DOWN_SPEED_MAX
-            # 瞬間下降-空白鍵.
-            if event.key == pygame.K_SPACE:
-                # 碰到磚塊.
-                if (not ifCopyToBricksArray()):
-                    # 恢復正常下降速度.
-                    brick_down_speed = BRICK_DOWN_SPEED_MAX
+                
     #---------------------------------------------------------------------    
     # 清除畫面.
     canvas.fill(color_light_gray)
