@@ -563,6 +563,7 @@ while running:
                         container_y = container_y + 1
                     else:
                         break
+                container_y = container_y + 1
                 brick_down_speed = BRICK_DOWN_SPEED_MAX
                                 
             #-----------------------------------------------------------------
