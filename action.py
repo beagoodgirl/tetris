@@ -134,7 +134,7 @@ point_rank= [0,0,0,0,0,0]
 #             pygame.draw.line(screen, (100,100,100), (0, y * 30), (canvas_width * 30, y * 30), 1)
 
 #-------------------------------------------------------------------------
-# 函數:秀字.
+# 函數:呈現字.
 # 傳入:
 #   text    : 字串.
 #   x, y    : 坐標.
@@ -249,19 +249,19 @@ def copyToBricksArray():
 #-------------------------------------------------------------------------
 #複製目前方塊以儲存
 #-------------------------------------------------------------------------
-def copyToStore():
-    global bricks, bricks_array
-    global container_x, container_y
-#
-    posX = 0
-    posY = 0
-    for x in range(4):
-        for y in range(4):
-            if (bricks[x][y] != 0):
-                posX = container_x + x
-                posY = container_y + y
-                if (posX >= 0 and posY >= 0):
-                    bricks_array[posX][posY] = bricks[x][y]
+# def copyToStore():
+#     global bricks, bricks_array
+#     global container_x, container_y
+# #
+#     posX = 0
+#     posY = 0
+#     for x in range(4):
+#         for y in range(4):
+#             if (bricks[x][y] != 0):
+#                 posX = container_x + x
+#                 posY = container_y + y
+#                 if (posX >= 0 and posY >= 0):
+#                     bricks_array[posX][posY] = bricks[x][y]
 
 #-------------------------------------------------------------------------
 # 初始遊戲.
