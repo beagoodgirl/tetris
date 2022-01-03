@@ -340,7 +340,7 @@ def updateNextBricks(brickId):
     background_bricks_next.update()
     
     # 更新背景區塊.
-    # background_bricks_next_next.update() 
+    background_bricks_next_next.update() 
 
     # 更新磚塊圖.
     pos_y = 52
