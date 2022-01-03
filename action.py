@@ -134,7 +134,7 @@ point_rank= [0,0,0,0,0,0]
 #             pygame.draw.line(screen, (100,100,100), (0, y * 30), (canvas_width * 30, y * 30), 1)
 
 #-------------------------------------------------------------------------
-# 函數:秀字.
+# 函數:輸出字.
 # 傳入:
 #   text    : 字串.
 #   x, y    : 坐標.
@@ -315,6 +315,7 @@ def ifClearBrick():
 #-------------------------------------------------------------------------
 def updateNextBricks(brickId):
     global bricks_next
+    global bricks_next_next
     
     # 清除方塊陣列.
     for y in range(4):
@@ -342,7 +343,7 @@ def updateNextBricks(brickId):
     # 更新背景區塊.
     background_bricks_next_next.update() 
 
-    # 更新磚塊圖.
+    # 更新磚塊圖(下一個).
     pos_y = 52
     for y in range(4):
         pos_x = 592
@@ -372,7 +373,37 @@ def updateNextBricks(brickId):
                 bricks_next_object[x][y].update()
             pos_x = pos_x + 28        
         pos_y = pos_y + 28
-                
+    
+    #更新磚塊圖(下下一個)###########
+    pos_y = 52
+    for y in range(4):
+        pos_x = 150
+        for x in range(4):
+            if(bricks_next_next[x][y] != 0):
+                bricks_next_next_object[x][y].rect[0] = pos_x
+                bricks_next_next_object[x][y].rect[1] = pos_y
+
+                # ColorVer:依照方塊編號設定顏色.
+                if (bricks_next[x][y]==1):
+                    bricks_next_next_object[x][y].color = box_color_orange
+                elif (bricks_next[x][y]==2):
+                    bricks_next_next_object[x][y].color = box_color_purple
+                elif (bricks_next_next[x][y]==3):
+                    bricks_next_next_object[x][y].color = box_color_blue
+                elif (bricks_next_next[x][y]==4):
+                    bricks_next_next_object[x][y].color = box_color_light_red
+                elif (bricks_next_next[x][y]==5):
+                    bricks_next_next_object[x][y].color = box_color_light_blue
+                elif (bricks_next_next[x][y]==6):
+                    bricks_next_next_object[x][y].color = box_color_yellow
+                elif (bricks_next_next[x][y]==7):
+                    bricks_next_next_object[x][y].color = box_color_green
+                elif (bricks_next_next[x][y]==9):
+                    bricks_next_next_object[x][y].color = color_white
+
+                bricks_next_next_object[x][y].update()
+            pos_x = pos_x + 28        
+        pos_y = pos_y + 28            
 #-------------------------------------------------------------------------
 # 產生新磚塊.
 #-------------------------------------------------------------------------
@@ -413,6 +444,7 @@ def brickNew():
     # 下個出現方塊.
     # 方塊編號(1~7).
     brick_next_id = random.randint( 1, 7)
+    
     
     # 初始方塊狀態.
     brick_state = 0
@@ -482,6 +514,11 @@ for y in range(4):
     for x in range(4):
         bricks_next_object[x][y] = Box(pygame, canvas, "brick_next_x_" + str(x) + "_y_" + str(y), [ 0, 0, 26, 26], color_gray_block)
 
+# 將繪圖方塊放入陣列(下下一個).
+for y in range(4):
+    for x in range(4):
+        bricks_next_next_object[x][y] = Box(pygame, canvas, "brick_next_next_x_" + str(x) + "_y_" + str(y), [ 0, 0, 26, 26], color_gray_block)
+
 # 背景區塊.
 background = Box(pygame, canvas, "background", [278, 18, 282, 562], color_gray)
 
@@ -501,6 +538,7 @@ s.play()           #播放音效
 
 # 方塊編號(1~7).
 brick_next_id = random.randint( 1, 7)
+brick_temp = 1
 # 產生新磚塊.
 brickNew()
 
@@ -510,6 +548,7 @@ brickNew()
 running = True
 time_temp = time.time()
 time_now = 0
+n = 0
 while running:
     # 計算時脈.
     time_now = time_now + (time.time() - time_temp)
@@ -633,8 +672,34 @@ while running:
                 brick_next_id = random.randint(1, 7)
             #-------------------------------------------------------------########
             #刪除方塊(儲存的)
-            elif event.key == pygame.K_SPACE and game_mode == 0:
-                pass
+            elif event.key == pygame.K_LSHIFT and game_mode == 0:
+                print(brick_id)
+                if n == 0:
+                    brick_next_next_id = brick_id
+                    
+                    brick_state = 0 #清空還在跑的方塊
+                    #設定初始位置
+                    container_x = 3
+                    container_y =-4
+                    # 現在出現方塊.
+                    brick_id = brick_next_id
+                    
+                    print(brick_next_next_id)
+                    n = n + 1
+                else:
+                    brick_state = 0 #清空還在跑的方塊
+                    #設定初始位置
+                    container_x = 3
+                    container_y =-4
+                    # 現在出現方塊.
+                    brick_temp = brick_id
+                    brick_id = brick_next_next_id
+                    brick_next_next_id = brick_temp
+                    brick_next_id = random.randint(1, 7)
+                    
+                    print(brick_id)
+                    print(brick_next_next_id)
+                
         #-----------------------------------------------------------------
         # 判斷放開按鈕
         if event.type == pygame.KEYUP:
